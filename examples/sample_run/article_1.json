@@ -1,0 +1,7 @@
+{
+  "source_name": "example-industry-feed",
+  "title": "Platform announces changes to weekend minimum-stay rules",
+  "url": "https://example.com/news/weekend-minimum-stay-override",
+  "published": "2026-06-28T09:00:00Z",
+  "text": "The platform announced today that guests will be able to override host-set weekend minimum-stay requirements under certain conditions starting next month. The change is part of a broader push to reduce booking friction. Hosts running dynamic weekend pricing rules that assume a guaranteed two-night minimum will need to review how those rules interact with the new override. The platform has not detailed exactly how often the override is expected to trigger, or which conditions qualify, beyond saying 'high-demand markets' will see it most. Host forums have already begun discussing how to adapt automation rules ahead of the rollout."
+}
