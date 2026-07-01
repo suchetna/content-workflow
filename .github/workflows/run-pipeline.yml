@@ -1,0 +1,51 @@
+name: run-pipeline
+
+# Runs the real pipeline (live sources + real Claude API calls) on GitHub's
+# own servers — no local Python install needed. Trigger it manually from
+# the Actions tab, or uncomment the schedule below to run it daily.
+
+on:
+  workflow_dispatch:
+    inputs:
+      min_score:
+        description: "Override scoring threshold (optional)"
+        required: false
+        default: ""
+      formats:
+        description: "Comma-separated formats (optional): wordpress,newsletter,social"
+        required: false
+        default: ""
+  # schedule:
+  #   - cron: "0 7 * * *"   # 7am UTC daily — uncomment to automate
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Run pipeline
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.min_score }}" ]; then
+            ARGS="$ARGS --min-score ${{ github.event.inputs.min_score }}"
+          fi
+          if [ -n "${{ github.event.inputs.formats }}" ]; then
+            ARGS="$ARGS --format ${{ github.event.inputs.formats }}"
+          fi
+          python cli.py run --config config.yaml $ARGS
+
+      # Results aren't visible in the Actions log by default (they're files),
+      # so upload them as a downloadable artifact on the run's summary page.
+      - name: Upload outbox as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: outbox-${{ github.run_number }}
+          path: outbox/
+          if-no-files-found: warn
