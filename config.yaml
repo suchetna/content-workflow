@@ -1,0 +1,55 @@
+# Editorial brief and pipeline configuration.
+# Change this to point Signal at a different beat, publication, or audience —
+# no code changes required.
+
+brief:
+  audience: "short-term rental hosts and revenue managers"
+  voice: >
+    Direct, specific, and allergic to fluff. Trade-press register, not
+    marketing copy. Assume the reader is busy and knowledgeable — earn
+    their attention with a real number or a real operational implication
+    in the first two sentences, not a throat-clearing intro.
+  what_matters: >
+    Stories with a clear operational or pricing implication for hosts:
+    platform policy changes, regulatory shifts, demand/rate data, new
+    integrations that change a workflow. Prefer specificity over scope.
+  what_to_skip: >
+    Vendor funding announcements, generic "AI is changing everything"
+    trend pieces, listicles without primary data, anything that reads
+    like a press release with the serial numbers filed off.
+
+sources:
+  - name: "example-industry-feed"
+    type: rss
+    url: "https://example.com/feed.xml"
+  - name: "example-regulator-updates"
+    type: rss
+    url: "https://example.com/regulatory-news/feed.xml"
+  # type: url — for one-off pages instead of a feed
+  # - name: "one-off-report"
+  #   type: url
+  #   url: "https://example.com/annual-report"
+
+scoring:
+  threshold: 7 # 1-10. Stories below this don't get drafted.
+  weights:
+    relevance: 0.4
+    timeliness: 0.3
+    specificity: 0.3
+
+drafting:
+  target_word_count: 650
+  include_pull_quote: true
+
+qa:
+  # Advisory only — QA never edits the draft, it produces a checklist.
+  flag_unverified_numbers: true
+  flag_unattributed_claims: true
+  flag_ai_writing_tells: true
+
+output:
+  formats: [wordpress, newsletter, social]
+  outbox_dir: "outbox"
+
+storage:
+  db_path: "signal.db"

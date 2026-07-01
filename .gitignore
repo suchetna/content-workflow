@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.env
+.venv/
+venv/
+outbox/
+signal.db
+.pytest_cache/
+*.egg-info/
+.DS_Store
